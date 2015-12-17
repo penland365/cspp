@@ -1,0 +1,71 @@
+\documentclass[a4paper]{report}
+\usepackage{amsmath,bm}
+\newenvironment{rcase}
+{\left.\begin{aligned}}
+{\end{aligned}\right\rbrace}
+\begin{document}
+\chapter{A Tour of Computer Systems}
+\setcounter{section}{8}
+\section{Important Themes}
+\subsection{Amdahl's Law}
+	\begin{equation}
+		\begin{rcase}
+		\bm{T_{new}} &= (1 - \alpha)\bm{T_{old}} + (\alpha\bm{T_{old}}) / k	\\ 
+		\bm{S} &= \frac{1}{(1 - \alpha) + \alpha/k} \label{1}
+		\end{rcase}
+		\quad \text{Amdahl's Equation}
+	\end{equation}
+	where $\alpha$ is the fraction of time a part of the system requires, and $k$ is the factor of increase / decrease.
+
+\textbf{Practice Problem 1.1 (page 22)} \textit{Suppose you work as a truck driver, and you have been hired to carry a load of potatoes from Boise, Idaho, to Minneapolis, Minnesota, a toal distance of 2,500 kilometers. You estimate you can average 100 km/hr driving within the speed limits, requiring a total of 25 hours for the trip.}
+\begin{itemize}
+	\item \textbf{\textit{A.}}  \textit{You hear on the news that Montana has just abolished its speed limit, which constitutes 1,500 km of the trip. Your truck can travel at 150 km/h. What will be your speedup for the trip?}
+	\item \textbf{\textit{B.}}  \textit{You can buy a new turbocharger for your truck at www.fasttrucks.com. They stock a variety of models, but the faster you want to go, the more it will cost. How fast must you travel through Montana to get an overall speedup for your trip of 1.67x?}
+\end{itemize} 
+
+\textbf{Solutions:}
+\begin{itemize}
+\item \textbf{\textit{A. }} From Amdahl's Law \eqref{1}, we have \(\alpha = 1500/2500 = 3/5 \) and \(k = 1.5 \)
+	\begin{equation} 
+		\bm{S} 
+			= \frac{1}{(1 - \alpha) + \alpha/k}
+			= \frac{1}{(1 - .6) + .6/1.5}
+			= \frac{1}{.4 + .4}
+			= \frac{1}{.8}
+			= \boxed{1.5\bm{x}}
+	\end{equation}
+\item \textbf{\textit{B. }} Solving Amdahl's Law \eqref{1} for $k$ 
+	\begin{equation}
+	\begin{split}
+		1 &= S((1 - \alpha) + \frac{\alpha}{k}) \\
+		  &= S(1 - \alpha) + S(\frac{\alpha}{k}) \\
+		  &= S - \frac{S}{\alpha} + \frac{-S\alpha}{k} \\
+		\frac{S\alpha}{k} &= 1 - S + S\alpha \\
+		\frac{1}{k} &= \frac{1 - S + S\alpha}{S\alpha} \label{2}	
+	\end{split}
+	\end{equation}
+Letting \(S = 1.67 \) and \(\alpha = .6 \) we have
+	\begin{equation}
+	\begin{split}
+		\frac{1}{k} &= \frac{1 - 1.67 + (1.67 * .6)}{1.67 * .6} \\
+		            &= \frac{.332}{1.002} \\
+		\frac{1}{k} &= .3313 \\
+		     \bm{k} &= 3.0181 * 100 \\
+		     \bm{k} &\approx  300 km/h
+	\end{split}
+	\end{equation}
+\end{itemize}
+
+\textbf{Practice Problem 1.2 (page 23)} \textit{The marketing department at your company has promised your customers that the next software release will show a 2x performance improvement. You have been assigned the task of delivering on that promise. You have determined that only 80\% of the system can be improved. How much (i.e.e, what value of $k$) would you need to improve this part to meet the overall performance target?}
+
+\textbf{Solution:}
+From Amdahl's Law \eqref{1}, we solve for $k$ again leading to \eqref{2}. Letting \(S = 2 \) and \(\alpha = .8\) we have
+	\begin{equation}
+	\begin{split}
+		\frac{1}{k} &= \frac{1 - 2 + 2(.8)}{2(.8)} \\
+		&= \frac{.6}{1.6} \\
+		\frac{1}{k} &= 0.375 \\
+		\bm{k} &= 2.667
+	\end{split}
+	\end{equation}
+\end{document}
